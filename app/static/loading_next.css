@@ -1,0 +1,83 @@
+/* Body styling */
+body {
+  background-color: #FAF7EF;
+  color: #393D25;
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center;
+  height: 100vh;
+}
+.f-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  /* Container for the caravan, car, and road */
+  .loading-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Caravan and car container */
+  .caravan-towing {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: -1px; /* Brings icons closer to the road */
+    color: #393D25;
+  }
+
+  /* Caravan icon styling */
+  .caravan-icon {
+    font-size: 80px;
+    margin-right: -2px; /* Adjusts spacing between caravan and car */
+  }
+
+  /* Car icon styling */
+  .car-icon {
+    font-size: 60px;
+  }
+
+  /* Road styling */
+  .road {
+    position: relative;
+    width: 250px;
+    height: 20px;
+    background-color: #333;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+
+  /* Dashes on the road */
+  .road::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 200%;
+    height: 4px;
+    background-image: repeating-linear-gradient(
+      to right,
+      #fff,
+      #fff 20px,
+      transparent 20px,
+      transparent 40px
+    );
+    transform: translateY(-50%);
+    animation: road-move 5.5s linear infinite; /* Slower road animation */
+  }
+
+  /* Animation for the moving road */
+  @keyframes road-move {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
