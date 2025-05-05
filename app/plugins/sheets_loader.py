@@ -49,7 +49,7 @@ class SheetsLoader:
         return self.sheet_data
 
     def get_sheet_data(self):
-        if self.last_loaded is None or time.time() - self.last_loaded > 60:
+        if self.last_loaded is None or time.time() - self.last_loaded > 600:
             print("Cache expired, loading fresh data")
             return self.load_from_sheets()
         print("Cache is still valid, returning cached data")

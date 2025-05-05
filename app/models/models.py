@@ -39,6 +39,7 @@ class Rally():
         self.e_day = self.start_dt.strftime("%d")
         self.e_month = self.start_dt.strftime("%b")
         self.e_year = self.start_dt.strftime("%Y")
+        self.nights = (self.end_dt - self.start_dt).days
         self.s_formatted = f"{self.ordinal(self.start_dt.day)} {self.start_dt.strftime('%B (%I %p)')}"
         self.e_formatted = f"{self.ordinal(self.end_dt.day)} {self.end_dt.strftime('%B (%I %p)')}"
         self.w3w_url = f"https://what3words.com/{self.rallysite.w3w}"

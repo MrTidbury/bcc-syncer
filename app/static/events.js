@@ -84,8 +84,4 @@ $(document).ready(function(){
         });
     })
 
-    $(".btnBook").click(function () {
-        alert("Rally Booking form popup will be displayed here");
-    });
-
   });

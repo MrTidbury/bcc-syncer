@@ -1,5 +1,5 @@
 import sys
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 from plugins.sheets_loader import SheetsLoader
 from models.models import convert_from_sheets
 
@@ -27,16 +27,18 @@ def rallylist():
         rallies = convert_from_sheets(sheet_helper.get_sheet_data())
         return render_template('rally_list.html', rallies=rallies, full_list=True)
     except Exception as e:
+        raise e
         return render_template('error.html', error=e)
 
 @app.route('/rallynext')
 def rallynext():
     try:
         rallies = convert_from_sheets(sheet_helper.get_sheet_data())
-        if len(rallies) > 2:
-            rallies = rallies[:2]
+        if len(rallies) > 3:
+            rallies = rallies[:3]
         return render_template('rally_list.html', rallies=rallies, full_list=False)
     except Exception as e:
+        print(e)
         return render_template('error.html', error=e)
 
 
@@ -47,6 +49,20 @@ def iframe_list():
 @app.route('/events-next')
 def iframe_next():
     return render_template('loading_next.html')
+
+@app.route('/book/<rally_id>')
+def show_booking_form(rally_id):
+    try:
+        rallies = convert_from_sheets(sheet_helper.get_sheet_data())
+        target_rally = [rally for rally in rallies if rally.id == rally_id]
+        print(target_rally[0].nights)
+        if not target_rally:
+            return render_template('error.html', error="Rally not found")
+        from_homepage = request.args.get('homepage', False)
+        return render_template('booking_form.html', rally=target_rally[0], from_homepage=from_homepage)
+    except Exception as e:
+        print(e)
+        return render_template('error.html', error=e)
 
 
 @app.route('/xhr/<action>')

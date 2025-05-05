@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Form (Fancy)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/booking.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/booking.js"></script>
+</head>
+{% if from_homepage %}
+<body class="next">
+{% else %}
+<body>
+{% endif %}
+<button class="btn btn-outline-secondary back-button">← Back to Events</button>
+<div class="container position-relative">
+    <!-- Back Button -->
+    <div class="form-card mx-auto" style="max-width: 600px;">
+        <!-- Progress Bar -->
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" id="progressBar" style="width: 20%;" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+
+        <form id="bookingForm">
+            <!-- Step 1 -->
+            <div class="form-step active" data-step="1">
+                <h3 class="mb-4">Booking for {{rally.name}}</h3>
+                <h5 class="mb-4">Step 1: Personal Details</h5>
+                <div class="mb-3">
+                    <label class="form-label">Full Name *</label>
+                    <input type="text" class="form-control required" name="fullname" placeholder="Enter your name">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Phone Number *</label>
+                    <input type="phone" class="form-control required" name="phoneNumber" placeholder="Enter your Phone Number">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Mobile Number</label>
+                    <input type="tel" class="form-control" name="mobileNumber" placeholder="Enter your Mobile Number">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email Address *</label>
+                    <input type="email" class="form-control required" name="email" placeholder="Enter your email">
+                </div>
+                <hr/>
+                <div class="mb-3">
+                    <label class="form-label">Membership Number *</label>
+                    <input type="text" class="form-control required" name="membershipNumber" placeholder="Enter your Membership Number">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Center *</label>
+                    <input type="text" class="form-control required" name="centerName" placeholder="Enter your center name">
+                </div>
+                <hr/>
+                <div class="mb-3">
+                    <label class="form-label">Emergency Contact Name *</label>
+                    <input type="text" class="form-control required" name="emergencyContactName" placeholder="Who can we contact if something goes wrong?">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Emergency Contact Telephone *</label>
+                    <input type="tel" class="form-control required" name="emergencyContactNumber" placeholder="Who can we contact if something goes wrong?">
+                </div>
+
+
+                <button type="button" class="btn btn-primary next-step">Next</button>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="form-step" data-step="2">
+                <h4 class="mb-4">Step 2: Arrival and Vehicle Information</h4>
+                <div class="mb-3">
+                    <label class="form-label">Arrival Date and Time *</label>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <input type="date" class="form-control required" name="arrivalDate" value="{{rally.start_dt.strftime('%Y-%m-%d')}}">
+                        </div>
+                        <div class="col-6">
+                            <input type="time" class="form-control required" name="arrivalTime" value="{{ rally.start_dt.strftime('%H:%M') }}">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Length of Stay *</label>
+                    <select class="form-select required" name="lengthOfStay">
+                        <option value="1 Nights" {% if rally.nights == 1 %}selected{% endif %}>1 Night</option>
+                        <option value="2 Nights" {% if rally.nights == 2 %}selected{% endif %}>2 Nights</option>
+                        <option value="3 Nights" {% if rally.nights == 3 %}selected{% endif %}>3 Nights</option>
+                        <option value="4 Nights" {% if rally.nights == 4 %}selected{% endif %}>4 Nights</option>
+                        <option value="5 Nights" {% if rally.nights == 5 %}selected{% endif %}>5 Nights</option>
+                        <option value="6 Nights" {% if rally.nights == 6 %}selected{% endif %}>6 Nights</option>
+                        <option value="7 Nights" {% if rally.nights == 7 %}selected{% endif %}>7 Nights</option>
+                        <option value="8 Nights" {% if rally.nights == 8 %}selected{% endif %}>8 Nights</option>
+                        <option value="9 Nights" {% if rally.nights == 9 %}selected{% endif %}>9 Nights</option>
+                        <option value="10 Nights" {% if rally.nights == 10 %}selected{% endif %}>10 Nights</option>
+                        <option value="11 Nights" {% if rally.nights == 11 %}selected{% endif %}>11 Nights</option>
+                        <option value="12 Nights" {% if rally.nights == 12 %}selected{% endif %}>12 Nights</option>
+                        <option value="13 Nights" {% if rally.nights == 13 %}selected{% endif %}>13 Nights</option>
+                        <option value="14 Nights" {% if rally.nights == 14 %}selected{% endif %}>14 Nights</option>
+                    </select>
+                    
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Vehicle Reg *</label>
+                    <input type="text" class="form-control" name="vehicleReg" placeholder="Enter your email">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Outfit Type and Length *</label>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <select class="form-select required" name="outfitType">
+                                <option value="Single Axel Caravan">Single Axel Caravan</option>
+                                <option value="Twin Axel Caravan">Twin Axel Caravan</option>
+                                <option value="Motor Caravan">Motor Caravan</option>
+                                <option value="Trailer Tent">Trailer Tent</option>
+                                <option value="Tent">Tent</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <input type="text" class="form-control" name="outfitLength" placeholder="Enter your outfit length (Meters)">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-secondary prev-step">Back</button>
+                <button type="button" class="btn btn-primary next-step">Next</button>
+            </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="form-step" data-step="3">
+                <h5 class="mb-4">Step 3: Guest Information and Social Selections</h4>
+                <div class="mb-3">
+                    <label class="form-label">My Party Includes: *</label>
+                    <div class="row g-3">
+                        <div class="col-4">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="adults" name="partyAdults" min="0" value="0">
+                                <label for="partyAdults">Adults</label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="teens" name="partyTeenagers" min="0" value="0">
+                                <label for="partyTeenagers">Teenagers</label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="children" name="partyChildren" min="0" value="0">
+                                <label for="partyChildren">Children</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <h6 class="mb-4" style="font-weight: bold;">Tickets for social events (if organised)</h6> 
+                <div class="mb-3">
+                    <label class="form-label">Social (with food): *</label>
+                    <div class="row g-3">
+                        <div class="col-4">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="adults" name="socialFoodAdults" min="0" value="0">
+                                <label for="socialFoodAdults">Adults</label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="teens" name="socialFoodTeenagers" min="0" value="0">
+                                <label for="socialFoodTeenagers">Teenagers</label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="children" name="socialFoodChildren" min="0" value="0">
+                                <label for="socialFoodChildren">Children</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Social (without food): *</label>
+                    <div class="row g-3">
+                        <div class="col-4">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="adults" name="socialNoFoodAdults" min="0" value="0">
+                                <label for="socialNoFoodAdults">Adults</label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="teens" name="socialNoFoodTeenagers" min="0" value="0">
+                                <label for="socialNoFoodTeenagers">Teenagers</label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="children" name="socialNoFoodChildren" min="0" value="0">
+                                <label for="socialNoFoodChildren">Children</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Special dietary needs (eg. vegetarian)</label>
+                    <textarea class="form-control" name="dietaryNeeds" rows="3" placeholder="Any special requirements?"></textarea>
+                </div>
+                <button type="button" class="btn btn-secondary prev-step">Back</button>
+                <button type="button" class="btn btn-primary next-step">Next</button>
+            </div>
+            
+            <!-- Step 4 -->
+            <div class="form-step" data-step="4">
+                <h5 class="mb-4">Step 4: Special Information and Milestones</h4>
+                <div class="mb-3">
+                        <label class="form-label">Rally plaque required (no extra cost)?</label>
+                        <select class="form-select required" name="rallyPlaque">
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">1st rally/event as a Berkshire Centre member?</label>
+                    <select class="form-select required" name="firstEvent">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">50th/100th/etc Caravan & Motorhome Club rally/event?</label>
+                    <select class="form-select required" name="anniversaryEvent">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">12th Berkshire rally this year (8th for visitors)?</label>
+                    <select class="form-select required" name="12thEvent">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Is any member of your party disabled?</label>
+                    <select class="form-select required" name="isDisabled">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Additional Notes:</label>
+                    <textarea class="form-control" name="additionalNotes" rows="3" placeholder="Please use this box for any comments/questions or to advise of any birthdays/anniversaries during the rally/event"></textarea>
+                </div>
+                <button type="button" class="btn btn-secondary prev-step">Back</button>
+                <button type="button" class="btn btn-primary next-step">Next</button>
+            </div>
+
+
+            <!-- Step 5 -->
+            <div class="form-step" data-step="5">
+                <h4 class="mb-4">Step 5: Confirmation</h4>
+                <p>Please review your details and submit your booking.</p>
+                
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="cookieConsent">
+                    <label class="form-check-label" for="cookieConsent">
+                        To make bookings faster in the future, we can use cookies to remember your preferences. Checking this box will allow us to do this.
+                        View our <a href="#" data-bs-toggle="modal" data-bs-target="#cookiePolicyModal">Cookie Policy here</a>.
+                    </label>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input required" id="termsAgreement">
+                    <label class="form-check-label" for="termsAgreement">
+                        <strong>By submitting this form, I acknowledge and agree that:</strong><br>
+                        - I will be liable for any fees incurred through late cancellation or non-attendance.<br>
+                        - I agree to the use of my information as outlined in the <a href="#" data-bs-toggle="modal" data-bs-target="#privacyPolicyModal">Privacy Policy</a> and <a href="#" data-bs-toggle="modal" data-bs-target="#cookiePolicyModal">Cookie Policy</a>.<br><br>
+                        <em><strong>Please click the box to accept the above terms and proceed with your booking.</strong></em>
+                    </label>
+                </div>
+                
+
+
+                <div class="modal fade" id="cookiePolicyModal" tabindex="-1" aria-labelledby="cookiePolicyModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="cookiePolicyModalLabel">We Use Cookies to Enhance Your Experience</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Your full Cookie Policy content goes here -->
+                                <p>
+                                    We use cookies to store your booking preferences and to provide a smoother, faster booking experience. These cookies allow us to remember your choices from previous visits and personalize your experience on our site. By accepting cookies, you agree to the storage of these small files on your device.
+                                    <br>
+                                    You can manage or disable cookies at any time through your browser settings. For more detailed information, please see <a href='https://allaboutcookies.org/' target="_blank">more about cookies</a>.
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal fade" id="privacyPolicyModal" tabindex="-1" aria-labelledby="privacyPolicyModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="privacyPolicyModalLabel">Data and Privacy Policy</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Your full privacy policy content goes here -->
+                                <p>
+                                    Photographs and video may be taken at our Centre events and rallies. The Centre and Club may use any photographs or videos they take that include you, your party and/or outfit in all and any media, including printed and electronic publications, eg websites, or promotional materials, in the advertising of its goods or services. The photographs and videos may be stored for these purposes as well. If you do not want to appear in any shots, please place a note in the Comments box above for this rally, or advise the Centre Secretary by email if for all events. They will do their best to accommodate this and ensure you can avoid the area being photographed/filmed.”
+                                    <br>
+                                    Members (and visiting members) who cancel their booking within seven days of an event or fail to attend will be charged the Rally Fee, the Admin Fee and an appropriate proportion (if any) of the Social Fee and Site Fee for the event.
+                                    <br>
+                                    The personal data you provide will be sent in an email to Rally Officers, and copied to a booking account that is monitored by Centre Committee. Information will be used for running the rally and will be destroyed afterwards. We assume personal data you provide for other individuals is done so with their consent. In providing your information, you consent to this.
+
+                                </p>
+                                <!-- Add as much detailed content as needed -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-secondary prev-step">Back</button>
+                <button type="submit" class="btn btn-success">Submit Booking</button>
+            </div>
+
+            <div class="form-step" data-step="6">
+                <h3>Thank you for submitting your booking!</h3>
+                <p>You will receive an email confirmation shortly.</p>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

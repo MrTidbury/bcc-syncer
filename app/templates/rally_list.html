@@ -62,7 +62,12 @@
                     {% endif %}
 
                     <div class="rally-buttons">
-                        <button type="button" class="btn btn-light btnBook">Book</button>
+                        <!-- <button type="button" class="btn btn-light btnBook">Book</button> -->
+                        {% if full_list %}
+                        <a href="/book/{{rally.id}}" class="btn btn-light btnBook">Book</a>
+                        {% else %}
+                        <a href="/book/{{rally.id}}?homepage=true" class="btn btn-light btnBook">Book</a>
+                        {% endif %}
                         <button type="button" class="btn btn-light btnShowLess">Show Less</button>
                     </div>
                 </div>
