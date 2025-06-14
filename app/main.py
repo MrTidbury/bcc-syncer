@@ -126,7 +126,7 @@ def admin_login():
     # For now, just accept any email and return dummy data
     session['admin_user'] = {
         'email': email,
-        'name': 'Admin User'  # TODO: Get actual name from database
+        'name': 'Jack Tidbury'  # TODO: Get actual name from database
     }
     
     return jsonify(session['admin_user'])

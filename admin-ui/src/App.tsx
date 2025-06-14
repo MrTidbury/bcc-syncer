@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Login from './components/Login'
-import BookingList, { getBookingCountByStatus } from './components/BookingList'
+import BookingList, { getBookingCountByStatus, type Booking } from './components/BookingList'
 import { PowerIcon } from '@heroicons/react/24/outline'
+import { EnvelopeIcon, PrinterIcon } from '@heroicons/react/24/outline'
 
 interface User {
   email: string
@@ -14,6 +15,8 @@ function App() {
   const [activeTab, setActiveTab] = useState(0)
   const [visibleTab, setVisibleTab] = useState(0)
   const [fadeState, setFadeState] = useState<'fade-in' | 'fade-out'>('fade-in')
+  const [toast, setToast] = useState<string | null>(null)
+  const toastTimeout = useRef<number | null>(null)
 
   useEffect(() => {
     // Check if user is logged in
@@ -80,6 +83,12 @@ function App() {
     }, 300); // match fade duration
   };
 
+  const showToast = (msg: string) => {
+    setToast(msg);
+    if (toastTimeout.current) clearTimeout(toastTimeout.current);
+    toastTimeout.current = setTimeout(() => setToast(null), 2000);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -101,9 +110,41 @@ function App() {
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 justify-between items-center">
             <div>
-              <h1 className="text-2xl font-extrabold tracking-tight text-blue-700">Berkshire Caravan Center</h1>
+              <h1 className="text-2xl font-extrabold tracking-tight text-blue-700">Berkshire Center Caravan Club - Bookings for Fun Rally</h1>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              {/* Action Buttons */}
+              <button
+                className="p-2 rounded-full bg-transparent hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                title="Copy Email Addresses to Clipboard"
+                onClick={async () => {
+                  const { allDummyBookings } = await import('./components/BookingList');
+                  const emails = (allDummyBookings as Booking[])
+                    .filter((b: Booking) => b.status === 'active')
+                    .map((b: Booking) => b.email)
+                    .filter(Boolean);
+                  if (emails.length === 0) return;
+                  const emailList = emails.join(',');
+                  try {
+                    await navigator.clipboard.writeText(emailList);
+                    showToast('Email Addresses Copied to Clipboard');
+                  } catch (err) {
+                    showToast('Could not copy to clipboard');
+                  }
+                }}
+              >
+                <EnvelopeIcon className="h-5 w-5 text-blue-600" />
+              </button>
+              <button
+                className="p-2 rounded-full bg-transparent hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                title="Print Rally Form"
+                onClick={() => showToast('Print Rally Form is not implemented yet.')}
+              >
+                <PrinterIcon className="h-5 w-5 text-blue-600" />
+              </button>
+              {/* Divider */}
+              <div className="h-8 border-l border-gray-300 mx-4" />
+              {/* User/Logout Controls */}
               <span className="px-3 py-1 rounded-full bg-blue-50 text-blue-700 font-medium text-sm shadow-sm">{user.name}</span>
               <button
                 onClick={handleLogout}
@@ -155,6 +196,13 @@ function App() {
           </div>
         </div>
       </main>
+
+      {/* Toast Notification */}
+      {toast && (
+        <div className="fixed bottom-6 inset-x-0 mx-auto w-fit max-w-md bg-gray-900 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-base font-medium animate-fade-in-up">
+          {toast}
+        </div>
+      )}
     </div>
   )
 }

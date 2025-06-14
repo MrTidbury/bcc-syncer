@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Dialog } from '@headlessui/react'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
-interface Booking {
+export interface Booking {
   id: string
   fullname: string
   email: string
@@ -61,7 +61,7 @@ function getRandomOutfit(idx: number) {
 }
 
 // Dummy data for all statuses
-const allDummyBookings: Booking[] = [
+export const allDummyBookings: Booking[] = [
   // Active bookings (15)
   ...Array.from({ length: 15 }, (_, i) => {
     const { first, last, email } = getRandomName(i);
