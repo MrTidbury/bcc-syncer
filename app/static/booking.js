@@ -47,27 +47,62 @@ $(document).ready(function() {
             }
         }
         if (store) {
-            document.cookie = "bccFormData=" + JSON.stringify(formData) + ";path=/;max-age=31536000";
+            
+            $.ajax({
+                url: 'https://bcc-syncer.nw.r.appspot.com/xhr/set_cookies',
+                method: 'POST',
+                xhrFields: {
+                  withCredentials: true // Important to allow cookies
+                },
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function(response) {
+                  console.log('Cookie set response:', response);
+                },
+                error: function(err) {
+                  console.error('Error setting cookie:', err);
+                }
+              });
+            console.log("Form data stored in cookies:", formData);
         }
         return formData;
     }
 
     // Load form data from cookies
     function loadFormData() {
-        const cookies = document.cookie.split('; ');
-        const formDataCookie = cookies.find(cookie => cookie.startsWith('bccFormData='));
-        if (formDataCookie) {
-            const formData = JSON.parse(formDataCookie.split('=')[1]);
-            for (const input in formData) {
-                // Skip the inputs you don't want to load
-                if (input === 'arrivalDate' || input === 'arrivalTime' || input === 'lengthOfStay') {
-                    continue;  // Skip these fields
+        $.ajax({
+            url: 'https://bcc-syncer.nw.r.appspot.com/xhr/get_cookies',
+            method: 'GET',
+            xhrFields: {
+              withCredentials: true
+            },
+            success: function(response) {
+                console.log('Fetched cookie data:', response.bccFormData);
+                for (const input in response.bccFormData) {
+                    // Skip the inputs you don't want to load
+                    if (input === 'arrivalDate' || input === 'arrivalTime' || input === 'lengthOfStay') {
+                        continue;  // Skip these fields
+                    }
+
+                    const value = response.bccFormData[input];
+                    $(`[name=${input}]`).val(value);  // Set the value of the form field
                 }
-    
-                const value = formData[input];
-                $(`[name=${input}]`).val(value);  // Set the value of the form field
+            },
+            error: function(err) {
+              console.error('Error fetching cookie:', err);
             }
-        }
+          });
+
+        // const cookies = document.cookie.split('; ');
+        // console.log(cookies)
+        // const formDataCookie = cookies.find(cookie => cookie.startsWith('bccFormData='));
+        // if (formDataCookie) {
+        //     const formData = JSON.parse(formDataCookie.split('=')[1]);
+        //     for (const input in formData) {
+        //         // Skip the inputs you don't want to load
+                
+        //     }
+        // }
     }
 
     function updateProgressBar(step) {

@@ -4,3 +4,4 @@ gspread==6.1.4
 google-api-core==2.18.0
 google-api-python-client==2.160.0
 google-cloud-secret-manager==2.22.1
+flask-cors==5.0.1
